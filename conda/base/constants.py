@@ -8,6 +8,7 @@ Think of this as a "more static" source of configuration information.
 Another important source of "static" configuration is conda/models/enums.py.
 """
 
+import os
 import struct
 from enum import Enum, EnumMeta
 from os.path import join
@@ -26,10 +27,11 @@ machine_bits = 8 * struct.calcsize("P")
 APP_NAME = "conda"
 
 if on_win:  # pragma: no cover
+    program_data = os.environ.get("ALLUSERSPROFILE", "C:/ProgramData")
     SEARCH_PATH = (
-        "C:/ProgramData/conda/.condarc",
-        "C:/ProgramData/conda/condarc",
-        "C:/ProgramData/conda/condarc.d",
+        join(program_data, "conda/.condarc"),
+        join(program_data, "conda/condarc"),
+        join(program_data, "conda/condarc.d"),
     )
 else:
     SEARCH_PATH = (
